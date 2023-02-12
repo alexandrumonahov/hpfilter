@@ -1,0 +1,54 @@
+#' Real Gross Domestic Product for European Union (28 countries)
+#'
+#' Units:  Millions of Chained 2010 Euros, Seasonally Adjusted
+#'
+#' Frequency:  Quarterly
+#'
+#' Eurostat unit ID: CLV10_MNAC
+#' Eurostat item ID = B1GQ
+#' Eurostat country ID: EU28
+#'
+#' Seasonally and calendar adjusted data.
+#'
+#' For euro area member states, the national currency series are converted into
+#' euros using the irrevocably fixed exchange rate. This preserves the same
+#' growth rates than for the previous national currency series. Both series
+#' coincide for years after accession to the euro area but differ for earlier
+#' years due to market exchange rate movements.
+#'
+#' European Union (28 countries): Belgium, Denmark, Germany, Ireland, Greece,
+#' Spain, France, Italy, Luxembourg, the Netherlands, Portugal, the United
+#' Kingdom, Austria, Finland, Sweden, Cyprus, the Czech Republic, Estonia,
+#' Hungary, Latvia, Lithuania, Malta, Poland, Slovenia, Slovakia, Bulgaria,
+#' Romania, and Croatia.
+#'
+#' Copyright, European Union, http://ec.europa.eu, 1995-2016. Complete terms of
+#' use are available at http://ec.europa.eu/geninfo/legal_notices_en.htm#copyright
+#'
+#' @docType data
+#'
+#' @usage data(GDPEU)
+#'
+#' @format A dataframe containing:
+#'         **gdp**  the seasonally-adjusted real Gross Domestic Product for 28
+#'         European Union countries
+#'         **date**  the date of each observation
+#'
+#' @keywords EU, GDP, seasonally, adjusted, quarterly, gross, domestic, product
+#'
+#' @references Eurostat, Real Gross Domestic Product for European Union (28 countries) [CLVMNACSCAB1GQEU28]
+#' (\href{http://ec.europa.eu/eurostat/about/overview}{Eurostat})
+#'
+#' @source \href{https://fred.stlouisfed.org/series/CLVMNACSCAB1GQEU28}{Data} retrieved from FRED, Federal Reserve Bank of St. Louis.
+#'
+#' @examples
+#' # Load the dataset
+#' data(GDPEU)
+#'
+#' # Plot the y series
+#' plot(GDPEU$date, GDPEU$y, type="l")
+#'
+#' # Remove the date column if not needed and store in a df object
+#' df <- GDPEU[,-1]
+#'
+"GDPEU"
