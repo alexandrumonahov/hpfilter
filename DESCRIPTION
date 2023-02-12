@@ -1,0 +1,19 @@
+Package: hpfilter
+Type: Package
+Title: An R Implementation of the One- and Two-Sided Hodrick-Prescott Filter
+Version: 1.0.0
+Author: Alexandru Monahov
+Maintainer: Alexandru Monahov <alexandru.monahov@proton.me>
+URL: https://www.alexandrumonahov.eu.org/projects
+Description: Provides two functions that implement the one-sided and
+    two-sided versions of the Hodrick-Prescott filter. The one-sided
+    version is a Kalman filter-based implementation, whereas the two-
+    sided version uses sparse matrices for improved efficiency.
+License: Copyright Alexandru Monahov, 2023. You may use, modify and
+    redistribute this code, provided that you give credit to the author
+    and make any derivative work available to the public for free.
+Imports:
+    Matrix
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
