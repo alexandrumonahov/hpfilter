@@ -1,0 +1,222 @@
+---
+title: "hpfilter: An R Implementation of the One- and Two-Sided Hodrick-Prescott Filter"
+author: "Alexandru Monahov"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{hpfilter: An R Implementation of the One- and Two-Sided Hodrick-Prescott Filter}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  error = TRUE,
+  comment = "#>"
+)
+```
+
+## The hpfilter package
+
+**hpfilter is a package that implements the one-sided and two-sided versions of the Hodrick-Prescott filter in R.**
+
+The two-sided implementation uses sparse matrices to enhance the efficiency of calculations when using large datasets. Its traditional use has been in macroeconomics, to smooth out the time series of variables such as the GDP. The one-sided version is based on the Kalman filter. An important use of the one-sided HP filter is for the calculation of the credit gap, according to the Basel III methodology for setting the Countercyclical Capital Buffer (CCyB) guide.
+
+#### **The Hodrick-Prescott Filter**
+
+The Hodrick-Prescott filter is a technique commonly used to smooth macroeconomic data such as the GDP. It consists in separating short-term, cyclical movements in the data from the long-term trend. Although the HP filter has received numerous critiques, recent studies show that alternative methods do not necessarily perform better. Furthermore, the Basel committee, an international body responsible for setting international guidelines for prudential regulation, has recommended the usage of the one-sided HP filter for calculations pertaining to the analysis of financial cycles.
+
+#### **Short mathematical overview**
+
+Filtering techniques, such as the HP filter are based on the concept of time series decomposition. This means that an original series $y$ is separated into its trend and cyclical components, with the remainder of the variability being classified as noise (or the error term $ε_t$).
+
+$y_t = ytrend_t + ycycle_t + \varepsilon_t$
+
+where:
+
+$t = [0, T]$
+
+$T$ - the total number of observations
+
+$ytrend_t$ - the trend component
+
+$ycycle_t$ - the cyclical component
+
+$\varepsilon_t$ - the error term.
+
+The HP filter finds a trend series that solves the minimization problem shown in the equation below:
+
+$\min\limits_{ytrend} ( \sum\limits_{t=1}^T(y_t-ytrend_t)^2+\lambda*\sum\limits_{t=2}^{T-1}[(ytrend_{t+1}-ytrend_{t})-(ytrend_{t}-ytrend_{t-1})]^2)$
+
+From the first-order conditions, we derive the following expression to be solved:
+
+$A*ytrend=y$
+
+where:
+
+$$
+A = \begin{bmatrix}1+\lambda &-2*\lambda &\lambda &0&\cdots&\cdots&\cdots&\cdots&0\\-2*\lambda&1+5*\lambda&-4*\lambda&\lambda&0&\cdots&\cdots&\cdots&0\\\lambda&-4*\lambda&1+6*\lambda&-4*\lambda&\lambda&0&\cdots&\cdots&0\\0 &\lambda  &-4*\lambda  &  1+6*\lambda  &  -4*\lambda &\lambda &0 &\cdots&0 \\\vdots&&&&&&&&\vdots\\0&\cdots&\cdots&0 &\lambda &-4*\lambda &1+6*\lambda &-4*\lambda &\lambda\\0&\cdots&\cdots&\cdots&0 & \lambda & -4*\lambda & 1+5*\lambda   & -2*\lambda\\0&\cdots&\cdots&\cdots&\cdots&0 & \lambda & -2*\lambda & 1+\lambda\end{bmatrix}
+$$
+
+$y$ - the vector containing the data to be processed
+
+$\lambda$ - the smoothing parameter.
+
+#### **References**
+
+For more details on the method, its advantages, disadvantages and use cases, see the following papers:
+
+-   Hodrick, R. J., and Prescott, E. C. (1997). Postwar U.S. Business Cycles: An Empirical Investigation. Journal of Money, Credit, and Banking 29: 1-16. <https://doi.org/10.2307/2953682>
+-   Mcelroy, T. (2008). Exact formulas for the Hodrick-Prescott Filter. Econometrics Journal. 11. 209-217. <https://doi.org/10.1111/j.1368-423X.2008.00230.x>
+-   BIS (2010). Guidance for national authorities operating the countercyclical capital buffer, Basel Committee on Banking Supervision, ISBN 92-9197-865-5. <https://www.bis.org/publ/bcbs187.htm>
+-   Hamilton, J. D. (2017). 'Why You Should Never Use the Hodrick-Prescott Filter'. Working Paper Series. National Bureau of Economic Research, May 2017. <https://doi.org/10.3386/w23429>
+-   Drehmann, M., and Yetman, J. (2018). Why You Should Use the Hodrick-Prescott Filter -- at Least to Generate Credit Gaps. BIS Working Paper No. 744. <https://ssrn.com/abstract=3275756>
+
+## Functions
+
+#### **hp1 - the one-sided HP Filter**
+
+This function applies the one-sided Hodrick-Prescott filter to the selected data, for the given smoothing parameter value.
+
+The one-sided HP filter is obtained by using the Kalman filter to find solutions of the local linear trend model. The approximation produced by the filter requires that a steady-state solution of the Kalman filter can be found. Since, for positive smoothing parameters, this is the case - the method can be used.
+
+In R, simply call the function:
+
+``` r
+hp1(y, lambda = 1600, x_user, P_user, discard)
+```
+
+The function takes as input:
+
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| y       | a dataframe of size Txn, where "T" is the number of observations for each variable (number of rows) and "n" - the number of variables in the dataframe (number of columns).                           |
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| lambda  | the smoothing parameter; a numeric scalar which takes the default value of 1600, if unspecified by the user.                                                                                          |
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| x_user  | user defined initial values of the state estimate for each variable in y. Takes the form of a 2xn matrix. Since the underlying state vector is 2x1, two values are needed for each variable in y.     |
+|         |                                                                                                                                                                                                       |
+|         | Default: if no values are provided, by default, backwards extrapolations based on the first two observations are used.                                                                                |
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| P_user  | a structural array with n elements, each of which being a 2x2 matrix of initial MSE estimates for each variable in y.                                                                                 |
+|         |                                                                                                                                                                                                       |
+|         | Default: If no values are provided, the default matrix with large variances is used.                                                                                                                  |
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| discard | the number of discard periods, expressed as a numeric scalar. The user specified amount of values will be discarded from the start of the sample, resulting in output matrices of size (T-discard)xn. |
+|         |                                                                                                                                                                                                       |
+|         | Default: If no values are provided, the value of 0 is used.                                                                                                                                           |
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+The function outputs the following series:
+
++----------+------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ytrend   | the trend series with cyclical components removed as a (T-discard)xn dataframe, where each column houses the filtered series corresponding to the original data. |
++----------+------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+#### **hp2 - the Two-Sided HP Filter**
+
+This function applies the two-sided Hodrick-Prescott filter to the selected data, for the given smoothing parameter value.
+
+The two-sided HP filter uses a sparse-matrix implementation to enable faster calculation with large datasets.
+
+``` r
+hp2(y, lambda = 1600)
+```
+
+The function takes as input:
+
++---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| y       | a dataframe of size Txn, where "T" is the number of observations for each variable (number of rows) and "n" - the number of variables in the dataframe (number of columns). |
++---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| lambda  | the smoothing parameter; a numeric scalar which takes the default value of 1600, if unspecified by the user.                                                                |
++---------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+The function outputs the following series:
+
++----------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ytrend   | the trend series with cyclical components removed as a Txn dataframe, where each column houses the filtered series corresponding to the original data. |
++----------+--------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+## Examples
+
+#### **Studying the GDP cycle with a two-sided HP filter**
+
+In this example, we will apply the HP filter to GDP data for the EU from Eurostat. More details about the series can be found in its help file, which you can access by typing: `?GDPEU`. Below, we can preview the first observations of the dataset:
+
+```{r, echo=FALSE, results='asis'}
+data(GDPEU)
+knitr::kable(head(GDPEU, 10))
+```
+
+The next code snippet shows the workflow associated with estimating the HP Filter - it involves loading the package, calculating the trend and deriving the cycle.
+
+```{r}
+# R CODE - Smoothing GDP data with the two-sided HP filter
+# Load library
+library(hpfilter)
+# Load dataset
+data(GDPEU)
+# Keep only the y series and store in df object
+y = GDPEU[,-1]
+# Run the two-sided HP filter with the default value of 1600
+# for lambda
+ytrend = hp2(y)
+# Calculate cyclical component
+ycycle = y - ytrend
+```
+
+Now, we can create graphs to show the results. We first plot the HP filtered trend and the actual series.
+
+```{r, out.width="100%", fig.width=10, fig.height=7.5}
+# Plot
+plot(y$gdp, type="l", col="black", lty=1)
+lines(ytrend$gdp, col="#066462")
+legend("bottom", horiz=TRUE, cex=0.75, c("y", "ytrend"), lty = 1, col = c("black", "#066462"))
+```
+
+Then, we plot the cyclical component.
+
+```{r, out.width="100%", fig.width=10, fig.height=7.5}
+plot(ycycle$gdp, type = "l")
+abline(h=0)
+```
+
+#### Synthetic data example for the one-sided HP filter
+
+In this example, we generate random time series data drawn from a normal distribution and apply the one-sided HP filter. After calculating the cyclical component from the trend series generated by the hp1 function, we plot the output alongside the original data.
+
+```{r, out.width="100%", fig.width=10, fig.height=7.5}
+# Generate the data and plot it
+set.seed(10)
+y <- as.data.frame(rev(diffinv(rnorm(100)))[1:100])+30
+colnames(y) <- "gdp"
+plot(y$gdp, type="l")
+
+# Apply the HP filter to the data
+ytrend = hp1(y)
+ycycle = y - ytrend
+
+# Plot the three resulting series
+plot(y$gdp, type="l", col="black", lty=1, ylim=c(-10,30))
+lines(ytrend$gdp, col="#066462")
+polygon(c(1, seq(ycycle$gdp), length(ycycle$gdp)), c(0, ycycle$gdp, 0), col = "#E0F2F1")
+legend("bottom", horiz=TRUE, cex=0.75, c("y", "ytrend", "ycycle"), lty = 1,
+       col = c("black", "#066462", "#75bfbd"))
+
+```
+
+## About the author
+
+This R implementation of the one-sided and two-sided HP filter was programmed by Dr. Alexandru Monahov.
+
+Alexandru Monahov holds a PhD in Economics from the University Cote d'Azur (Nice, France) and a Professional Certificate in Advanced Risk Management from the New York Institute of Finance (New York, United States). His Master's Degree in International Economics and Finance and his Bachelor's Degree in Economics and Business Administration were completed at the University of Nice (Nice, France).
+
+He works as an Expert Consultant at the National Bank (Chisinau, Moldova), within the Financial Stability Division. He also acts as a trainer for professionals in finance from Central Banks and Ministries of Finance at the Center of Excellence in Finance (Ljubljana, Slovenia). Previously, he worked as assistant and, subsequently, associate professor at the University of Nice and IAE in France, where he taught Finance, Economics, Econometrics and Business Administration. He developed training and professional education curricula for the Chambers of Commerce and Industry and directed several continuing education programs.
+
+Dr. Monahov was awarded funding for continuing professional education by the World Bank through the Reserve Advisory & Management Partnership Program, a PhD scholarship by the Doctoral School of Nice and a scholarship of the French Government.
+
+⠀
+
+    Copyright Alexandru Monahov, 2023.
+
+    You may use, modify and redistribute this code, provided that you give credit to the author and make any derivative work available to the public for free.
