@@ -557,8 +557,57 @@ filter</strong></h4>
 from Eurostat. More details about the series can be found in its help
 file, which you can access by typing: <code>?GDPEU</code>. Below, we can
 preview the first observations of the dataset:</p>
-<pre><code>#&gt; Warning in data(GDPEU): data set &#39;GDPEU&#39; not found
-#&gt; Error in head(GDPEU, 10): object &#39;GDPEU&#39; not found</code></pre>
+<pre><code>#&gt; Warning in data(GDPEU): data set &#39;GDPEU&#39; not found</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">date</th>
+<th align="right">gdp</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1995-01-01</td>
+<td align="right">2402904</td>
+</tr>
+<tr class="even">
+<td align="left">1995-04-01</td>
+<td align="right">2416576</td>
+</tr>
+<tr class="odd">
+<td align="left">1995-07-01</td>
+<td align="right">2428126</td>
+</tr>
+<tr class="even">
+<td align="left">1995-10-01</td>
+<td align="right">2437408</td>
+</tr>
+<tr class="odd">
+<td align="left">1996-01-01</td>
+<td align="right">2443884</td>
+</tr>
+<tr class="even">
+<td align="left">1996-04-01</td>
+<td align="right">2459908</td>
+</tr>
+<tr class="odd">
+<td align="left">1996-07-01</td>
+<td align="right">2474558</td>
+</tr>
+<tr class="even">
+<td align="left">1996-10-01</td>
+<td align="right">2487735</td>
+</tr>
+<tr class="odd">
+<td align="left">1997-01-01</td>
+<td align="right">2502900</td>
+</tr>
+<tr class="even">
+<td align="left">1997-04-01</td>
+<td align="right">2531872</td>
+</tr>
+</tbody>
+</table>
 <p>The next code snippet shows the workflow associated with estimating
 the HP Filter - it involves loading the package, calculating the trend
 and deriving the cycle.</p>
