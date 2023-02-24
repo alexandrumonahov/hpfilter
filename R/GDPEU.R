@@ -34,10 +34,10 @@
 #'         European Union countries
 #'         **date**  the date of each observation
 #'
-#' @keywords EU, GDP, seasonally, adjusted, quarterly, gross, domestic, product
+#' @keywords EU GDP seasonally adjusted quarterly gross domestic product
 #'
 #' @references Eurostat, Real Gross Domestic Product for European Union (28 countries) [CLVMNACSCAB1GQEU28]
-#' (\href{http://ec.europa.eu/eurostat/about/overview}{Eurostat})
+#' (\href{https://ec.europa.eu/eurostat/en/web/main/data}{Eurostat})
 #'
 #' @source \href{https://fred.stlouisfed.org/series/CLVMNACSCAB1GQEU28}{Data} retrieved from FRED, Federal Reserve Bank of St. Louis.
 #'

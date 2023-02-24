@@ -12,7 +12,7 @@
 
 <meta name="author" content="Alexandru Monahov" />
 
-<meta name="date" content="2023-02-15" />
+<meta name="date" content="2023-02-23" />
 
 <title>hpfilter: An R Implementation of the One- and Two-Sided Hodrick-Prescott Filter</title>
 
@@ -341,7 +341,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1 class="title toc-ignore">hpfilter: An R Implementation of the One-
 and Two-Sided Hodrick-Prescott Filter</h1>
 <h4 class="author">Alexandru Monahov</h4>
-<h4 class="date">2023-02-15</h4>
+<h4 class="date">2023-02-23</h4>
 
 
 
@@ -429,7 +429,7 @@ Hodrick-Prescott Filter’. Working Paper Series. National Bureau of
 Economic Research, May 2017. <a href="https://doi.org/10.3386/w23429" class="uri">https://doi.org/10.3386/w23429</a></li>
 <li>Drehmann, M., and Yetman, J. (2018). Why You Should Use the
 Hodrick-Prescott Filter – at Least to Generate Credit Gaps. BIS Working
-Paper No. 744. <a href="https://ssrn.com/abstract=3275756" class="uri">https://ssrn.com/abstract=3275756</a></li>
+Paper No. 744. <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3275756" class="uri">https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3275756</a></li>
 </ul>
 </div>
 </div>
@@ -557,57 +557,8 @@ filter</strong></h4>
 from Eurostat. More details about the series can be found in its help
 file, which you can access by typing: <code>?GDPEU</code>. Below, we can
 preview the first observations of the dataset:</p>
-<pre><code>#&gt; Warning in data(GDPEU): data set &#39;GDPEU&#39; not found</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">date</th>
-<th align="right">gdp</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">1995-01-01</td>
-<td align="right">2402904</td>
-</tr>
-<tr class="even">
-<td align="left">1995-04-01</td>
-<td align="right">2416576</td>
-</tr>
-<tr class="odd">
-<td align="left">1995-07-01</td>
-<td align="right">2428126</td>
-</tr>
-<tr class="even">
-<td align="left">1995-10-01</td>
-<td align="right">2437408</td>
-</tr>
-<tr class="odd">
-<td align="left">1996-01-01</td>
-<td align="right">2443884</td>
-</tr>
-<tr class="even">
-<td align="left">1996-04-01</td>
-<td align="right">2459908</td>
-</tr>
-<tr class="odd">
-<td align="left">1996-07-01</td>
-<td align="right">2474558</td>
-</tr>
-<tr class="even">
-<td align="left">1996-10-01</td>
-<td align="right">2487735</td>
-</tr>
-<tr class="odd">
-<td align="left">1997-01-01</td>
-<td align="right">2502900</td>
-</tr>
-<tr class="even">
-<td align="left">1997-04-01</td>
-<td align="right">2531872</td>
-</tr>
-</tbody>
-</table>
+<pre><code>#&gt; Warning in data(GDPEU): data set &#39;GDPEU&#39; not found
+#&gt; Error in head(GDPEU, 10): object &#39;GDPEU&#39; not found</code></pre>
 <p>The next code snippet shows the workflow associated with estimating
 the HP Filter - it involves loading the package, calculating the trend
 and deriving the cycle.</p>

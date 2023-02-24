@@ -4,7 +4,7 @@
 \alias{hp2}
 \title{Two-Sided HP Filter}
 \usage{
-hp2(y, lambda = 1600, discard = 0)
+hp2(y, lambda = 1600)
 }
 \arguments{
 \item{y}{a dataframe of size Txn, where “T” is the number of observations
@@ -74,12 +74,12 @@ Shea, J. (2021). neverhpfilter: An Alternative to the Hodrick-Prescott Filter. C
 \author{
 Alexandru Monahov, <https://www.alexandrumonahov.eu.org/>
 }
-\keyword{filter,}
-\keyword{gdp,}
-\keyword{hp,}
-\keyword{hp2,}
-\keyword{macroeconomic,}
+\keyword{filter}
+\keyword{gdp}
+\keyword{hp}
+\keyword{hp2}
+\keyword{macroeconomic}
 \keyword{series}
-\keyword{smoothing,}
-\keyword{time,}
-\keyword{two-sided,}
+\keyword{smoothing}
+\keyword{time}
+\keyword{two-sided}

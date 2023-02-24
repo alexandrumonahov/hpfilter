@@ -34,9 +34,9 @@
 #'   Of course, having a sufficiently long time series is paramount to achieving
 #'   meaningful results.
 #'
-#' @usage hp1(y, lambda = 1600, discard = 0)
+#' @usage hp1(y, lambda = 1600, x_user = NA, P_user = NA, discard = 0)
 #'
-#' @keywords hp1, one-sided, hp, filter, kalman, basel, ccyb, gap, buffer
+#' @keywords hp1 one-sided hp filter kalman basel ccyb gap buffer
 #'
 #' @seealso [hp2()]
 #'
@@ -82,7 +82,7 @@
 #'
 #' @export
 
-hp1 <- function(y,lambda,x_user,P_user,discard) {
+hp1 <- function(y,lambda=1600,x_user=NA,P_user=NA,discard=0) {
 
   kalman_update = function(y,F,H,Q,R,j,k,x,P) {
     # Updates the Kalman filter estimation of the state and MSE
@@ -98,7 +98,6 @@ hp1 <- function(y,lambda,x_user,P_user,discard) {
   }
 
   ytrend <- matrix(data=NA,nrow=nrow(y),ncol=ncol(y)) # Create an empty matrix of the same size as "y", where the Kalman filtration results will be stored
-  if (nargs() < 2 | exists("lambda")=="FALSE")  {lambda = 1600} # If the user didn't provide a value for lambda, set it to the default value of 1600
   T = nrow(y)
   n = ncol(y)
   # Kalman preliminaries. The notation follows Chapter 13 of Hamilton, J.D.
@@ -111,8 +110,8 @@ hp1 <- function(y,lambda,x_user,P_user,discard) {
   R = 1 # The variance of the error in the observation equation
 
   for (k in 1:n) { # Run the Kalman filter for each variable
-    if (nargs() < 4 | exists("x_user")=="FALSE") {x = rbind(unlist(c(2*y[1,k]-y[2,k])), unlist(c(3*y[1,k]-2*y[2,k])))} else {x = x_user[,k]} # If the user didn't provide an initial value for state estimate, extrapolate back two periods from the observations
-    if (nargs() < 4 | exists("P_user")=="FALSE") {P = rbind(c(1e5, 0), c(0,1e5))} else {P = P_user[k]} # If the user didn't provide an intial value for the MSE, set a relatively high one
+    if (is.na(x_user)) {x = rbind(unlist(c(2*y[1,k]-y[2,k])), unlist(c(3*y[1,k]-2*y[2,k])))} else {x = x_user[,k]} # If the user didn't provide an initial value for state estimate, extrapolate back two periods from the observations
+    if (is.na(P_user)) {P = rbind(c(1e5, 0), c(0,1e5))} else {P = P_user[k]} # If the user didn't provide an intial value for the MSE, set a relatively high one
     for (j in 1:T) { # Get the estimates for each period
       klm = kalman_update(y,F,H,Q,R,j,k,x,P) # store the results returned by the function as a list called "klm"
       x = klm$x # get element "x" from the list called "klm" and store it as "x" so that it can be used outside the function kalman_update

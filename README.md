@@ -1,4 +1,4 @@
-# hpfilter
+# hpfilter <img src="man/figures/logo.png" align="right" height="136" />
 
 ## An R Implementation of the One- and Two-Sided Hodrick-Prescott Filter
 
@@ -33,7 +33,7 @@ By default: if no values are provided, by default, backwards extrapolations base
 _P_user_	–	a structural array with n elements, each of which being a 2x2 matrix of initial MSE estimates for each variable in y.
 By default: If no values are provided, the default matrix with large variances is used.
 
-_discard_	–	the number of discard periods, expressed as a numeric scalar. The user specified amount of values will be discarded from the start of the sample, resulting in output matrices of size (T-discard)xn. 
+_discard_	–	the number of discard periods, expressed as a numeric scalar. The user specified amount of values will be discarded from the start of the sample, resulting in output matrices of size (T-discard)xn.
 By default: If no values are provided, the value of 0 is used.
 
  ### hp2 - the Two-Sided HP Filter
@@ -49,22 +49,22 @@ _λ_	–	the smoothing parameter; a numeric scalar which takes the default value
 
 The value of the smoothing parameter should be positive. Furthermore, the code needs at least four observations in order to run. That said, the quality of the estimation will improve with the length of the time series.
 
-## Download and installation
+## Download and installation of development version
 
 #### Online, from Github:
 
-You can download **hpfilter** directly from Github. To do so, you need to have the **devtools** pachage installed and loaded. Once you are in **R**, run the following commands:
+You can download **hpfilter** directly from Github. To do so, you need to have the **devtools** package installed and loaded. Once you are in **R**, run the following commands:
 
 > install.packages("devtools")
-> 
+>
 > library("devtools")
-> 
+>
 > install_github("alexandrumonahov/hpfilter")
 
-You may face downloading errors from Github if you are behind a forewall or there are https download restrictions. To avoid this, you can try running the following commands:
+You may face downloading errors from Github if you are behind a firewall or there are https download restrictions. To avoid this, you can try running the following commands:
 
 > options(download.file.method = "libcurl")
-> 
+>
 > options(download.file.method = "wininet")
 
 Once the package is installed, you can run it using the: **library(hpfilter)** command.

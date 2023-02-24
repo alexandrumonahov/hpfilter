@@ -56,13 +56,13 @@ df <- GDPEU[,-1]
 }
 \references{
 Eurostat, Real Gross Domestic Product for European Union (28 countries) [CLVMNACSCAB1GQEU28]
-(\href{http://ec.europa.eu/eurostat/about/overview}{Eurostat})
+(\href{https://ec.europa.eu/eurostat/en/web/main/data}{Eurostat})
 }
-\keyword{EU,}
-\keyword{GDP,}
-\keyword{adjusted,}
-\keyword{domestic,}
-\keyword{gross,}
+\keyword{EU}
+\keyword{GDP}
+\keyword{adjusted}
+\keyword{domestic}
+\keyword{gross}
 \keyword{product}
-\keyword{quarterly,}
-\keyword{seasonally,}
+\keyword{quarterly}
+\keyword{seasonally}

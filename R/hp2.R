@@ -18,9 +18,9 @@
 #'   Of course, having a sufficiently long time series is paramount to achieving
 #'   meaningful results.
 #'
-#' @usage hp2(y, lambda = 1600, discard = 0)
+#' @usage hp2(y, lambda = 1600)
 #'
-#' @keywords hp2, two-sided, hp, filter, gdp, macroeconomic, smoothing, time, series
+#' @keywords hp2 two-sided hp filter gdp macroeconomic smoothing time series
 #'
 #' @seealso [hp1()]
 #'
@@ -68,10 +68,9 @@
 #'
 #' @export
 
-hp2 <- function(y,lambda) {
+hp2 <- function(y,lambda=1600) {
 
   ytrend <- matrix(data=NA,nrow=nrow(y),ncol=ncol(y)) # Create an empty matrix of the same size as "y", where the results will be stored
-  if (nargs() < 2 | exists("lambda")=="FALSE")  {lambda = 1600} # If the user didn't provide a value for lambda, set it to the default value of 1600;
   T = nrow(y)
   n = ncol(y)
   # Preliminary calculations

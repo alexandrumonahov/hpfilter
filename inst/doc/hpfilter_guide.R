@@ -1,15 +1,15 @@
-## ----setup, include = FALSE, echo=FALSE-----------------------------------------------------------------------
+## ----setup, include = FALSE, echo=FALSE---------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   error = TRUE,
   comment = "#>"
 )
 
-## ---- echo=FALSE, results='asis'------------------------------------------------------------------------------
+## ---- echo=FALSE, results='asis'----------------------------------------------
 data(GDPEU)
 knitr::kable(head(GDPEU, 10))
 
-## -------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # R CODE - Smoothing GDP data with the two-sided HP filter
 # Load library
 library(hpfilter)
@@ -21,17 +21,17 @@ ytrend = hp2(y)
 # Calculate cyclical component
 ycycle = y - ytrend
 
-## ---- out.width="100%", fig.width=10, fig.height=7.5----------------------------------------------------------
+## ---- out.width="100%", fig.width=10, fig.height=7.5--------------------------
 # Plot
 plot(y$gdp, type="l", col="black", lty=1)
 lines(ytrend$gdp, col="#066462")
 legend("bottom", horiz=TRUE, cex=0.75, c("y", "ytrend"), lty = 1, col = c("black", "#066462"))
 
-## ---- out.width="100%", fig.width=10, fig.height=7.5----------------------------------------------------------
+## ---- out.width="100%", fig.width=10, fig.height=7.5--------------------------
 plot(ycycle$gdp, type = "l")
 abline(h=0)
 
-## ---- out.width="100%", fig.width=10, fig.height=7.5----------------------------------------------------------
+## ---- out.width="100%", fig.width=10, fig.height=7.5--------------------------
 # Generate the data and plot it
 set.seed(10)
 y <- as.data.frame(rev(diffinv(rnorm(100)))[1:100])+30

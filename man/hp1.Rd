@@ -4,7 +4,7 @@
 \alias{hp1}
 \title{One-Sided HP Filter}
 \usage{
-hp1(y, lambda = 1600, discard = 0)
+hp1(y, lambda = 1600, x_user = NA, P_user = NA, discard = 0)
 }
 \arguments{
 \item{y}{a dataframe of size Txn, where “T” is the number of observations
@@ -90,12 +90,12 @@ Shea, J. (2021). neverhpfilter: An Alternative to the Hodrick-Prescott Filter. C
 \author{
 Alexandru Monahov, <https://www.alexandrumonahov.eu.org/>
 }
-\keyword{basel,}
+\keyword{basel}
 \keyword{buffer}
-\keyword{ccyb,}
-\keyword{filter,}
-\keyword{gap,}
-\keyword{hp,}
-\keyword{hp1,}
-\keyword{kalman,}
-\keyword{one-sided,}
+\keyword{ccyb}
+\keyword{filter}
+\keyword{gap}
+\keyword{hp}
+\keyword{hp1}
+\keyword{kalman}
+\keyword{one-sided}
